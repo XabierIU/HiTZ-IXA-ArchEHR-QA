@@ -1,0 +1,18 @@
+"""You are a medical expert. You are provided with a list of sentences from a CLINICAL NOTE, where each sentence begins with its identification number in the format 'X. ->', with X being the identification number. The sentences are as follows:
+
+{clinical_sentences}
+
+A patient has asked a QUESTION regarding that clinical note:
+
+{patient_question}
+
+And a professional has provided the following ANSWER, based on the aforementioned CLINICAL NOTE and the QUESTION:
+
+{answer_sentences}
+
+Each sentence of the ANSWER ends with the character '[??]'. YOUR TASK IS:
+
+TO REPLACE the '??' characters with the identification number of the sentence (or sentences) from the CLINICAL NOTE on which the current answer sentence is based. You MUST output an exact copy of the answer with the '[??]' characters replaced. You MUST follow these INSTRUCTIONS:
+
+Your answer:
+"""

@@ -1,0 +1,28 @@
+You are given a list of sentences of a CLINICAL NOTE, where each sentence has its identification 
+number at the beginning, written with the format 'X. ->', being X the identification number. The following are the sentences:
+
+{clinical_sentences}
+
+And a professional has made the following ANSWER, based on the previous CLINICAL NOTE:
+
+{answer_sentences}
+
+Each sentence of the ANSWER has at the end the character '[??]'. YOUR TASK IS:
+
+TO REPLACE that character with the identification number of the sentence (or sentences) of the CLINICAL NOTE on which is based the
+current answer sentence. You MUST follow the next format for your output: 
+
+* 1st sentence of the answer. [X,Y,Z]
+* 2nd sentence of the answer. [X,Y,Z]
+
+Where X, Y and Z are the identification numbers of the clinical note sentences. Also, you must follow this instructions:
+
+-If an answer sentence is NOT BASED in any clinical note sentence, you MUST write the full sentence as above, and the symbol '[]'. For example: * full sentence. []
+-You MUST NOT change the answer sentence in your output.
+-You MUST include all the answer sentences in your output.
+-You MUST insert a '*' symbol followed by a space at the beginning of each sentence.
+-You MUST use only commas to separate the identification numbers at the references part. For example: [1,2].
+-You MUST NOT include any other information. The answer SHOULD include ONLY the answer sentences and their references. 
+-You MUST STRICTLY FOLLOW the format described above in your outputs.
+
+Your answer:
