@@ -360,21 +360,6 @@ def model_executor (llm,template,clinical_sentences, patient_question, answer_se
         denborak.append({"case_id": kasua, "time": end-start})
     return emaitzak, denborak
 
-def finish_evaluation (gold,emaitzak,denborak):
-    log_final = [ ]
-    for j in range(MULTIPLE):
-        ebal=ebaluatzailea(gold,emaitzak[j])
-        micro=micro_ebal(ebal)
-        log = prepare_results(ebal,micro)
-        log["Exec_time"]=sum(pd.DataFrame(denborak[j])["time"])
-        log_final.append(log)
-    df = pd.DataFrame(log_final)
-    mean=dict(df[["Precision","Recall","F1","Full_ok","Big_ok","Void_ok","Case_ok","Error","TP","Sent_error","Exec_time"]].mean())
-    mean = {k: float(v) for k, v in mean.items()}
-    std=dict(df[["Precision","Recall","F1","Full_ok","Big_ok","Void_ok","Case_ok","Error","TP","Sent_error","Exec_time"]].std())
-    std = {k: float(v) for k, v in std.items()}
-    return mean, std
-
 def main ():
     print("--AGENTE BAKARRAREN PROGRAMA--")
     template = prompt_loader ()
@@ -407,13 +392,6 @@ def main ():
             json.dump(results_col,f)
         with open(TIMES_FILE,"w") as f:
             json.dump(times_col,f)
-        #mean, std = finish_evaluation(gold,results_col,times_col)
-        #print("Mean: ",mean)
-        #print("Std: ",std)
-        #with open(OUTPUT_FILE,"w") as f:
-        #    json.dump(results_col,f)
-        #with open(TIMES_FILE,"w") as f:
-        #    json.dump(times_col,f)
     print("ONDO. Emaitzak gordeta.")
 
 if __name__=="__main__":
