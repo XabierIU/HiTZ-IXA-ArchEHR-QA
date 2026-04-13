@@ -50,3 +50,5 @@ Where:
 PROMPT_FILE2 is the path to the prompt file that the second LLM will use.<br>
 MODEL_NAME2 is the name of the second LLM.<br>
 NUM_AGENTS2 is the number of instances of the second LLM that will be executed.<br> 
+
+All programs have a global variable — ITERS in zero_shot.py and MULTIPLE in the other two programs — which can be used to execute the full program several times to ensure statistical validity of the results. The default value of this variable in all programs is 1 (a single execution).
