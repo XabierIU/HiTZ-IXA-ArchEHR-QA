@@ -1,6 +1,8 @@
 # Instructions to execute the programs of Substak 4
 The exact commands to execute the programs and to obtain the results described in the paper are described in the following sections. 
 
+**Note**. Before using these programs, it is necessary to generate the preprocessed files by means of the preproc.py file provided in this repository. Then, adjust the paths accordingly in each file (located in the PREPROC_FILES variable).
+
 ## Random and embedding models
 
 Just execute the random_and_embedding_systems.py file.
