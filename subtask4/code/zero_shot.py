@@ -23,7 +23,7 @@ args = parser.parse_args()
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
-PREPROC_FILES = {"clinical_sentences": "../preproc/TEST-2025/ohar_klinikoa.json", #ADJUST THIS PATHS. SET THE PATHS TO THE OUTPUT FILES OF THE PREPROC.PY FILE. 
+PREPROC_FILES = {"clinical_sentences": "../preproc/TEST-2025/ohar_klinikoa.json", #ADJUST THESE PATHS. SET THE PATHS TO THE OUTPUT FILES OF THE PREPROC.PY FILE. 
                  "patient_question": "../preproc/TEST-2025/galderak.json",
                  "answer_sentences": "../preproc/TEST-2025/erantzunak.json"}
 
