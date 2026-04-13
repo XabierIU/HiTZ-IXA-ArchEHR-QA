@@ -15,7 +15,7 @@ python3 zero_shot.py -pf $PROMPT_FILE$ -of $OUTPUT_FILE$ -tf $TIMES_FILE$ -mo $M
 
 Where: 
 
-PROMPT_FILE is the path to the file containing the prompt, in raw text.
+PROMPT_FILE is the path to the file containing the prompt, in raw text.\n
 OUTPUT_FILE is the path where the outputs should be placed.
 TIMES_FILE is the path where the execution time numbers should be placed.
 MODEL_NAME is the name of the LLM that will be executed. Identification number for loading via the transformers package.
