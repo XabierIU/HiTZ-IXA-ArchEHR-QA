@@ -18,6 +18,8 @@ from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import HumanMessagePromptTemplate
 
+from "../../../preproc/preproc.py" import esaldi_erref_bikoteak, data_esaldi_bikoteak, data_oinarrizkoak, erantzun_txantiloi_sortzailea, paziente_galderak
+
 ##########################################
     #Random Systems: for baseline use.
 ##########################################
