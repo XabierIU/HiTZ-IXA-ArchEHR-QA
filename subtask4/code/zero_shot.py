@@ -57,23 +57,27 @@ ITERS = 1
 
 torch.cuda.empty_cache()
 
+#Function to give a structured format to the clinical notes.
 def galdera_formatu_emailea (galdera_erref,kasua):
     formatatuta=""
     for esaldia in galdera_erref[kasua]:
         formatatuta=formatatuta+esaldia+". -> "+galdera_erref[kasua][esaldia]+"\n"
     return formatatuta
 
+#Function to give a structured format to the clinical answer.
 def erantzun_formatu_emailea (erantzun_erref,kasua):
     formatatuta=""
     for esaldia in erantzun_erref[kasua]:
         formatatuta=formatatuta+"* "+erantzun_erref[kasua][esaldia]["Testua"]+" [??]"+"\n"
     return formatatuta
 
+#Initialize GPUs
 def gpu_initializer ():
     device = torch.device(f"cuda:{GPU_ID}" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
     return device
 
+#Initialize models
 def model_initializer (device):
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     if FLOAT_POINT == "normal":
@@ -99,11 +103,13 @@ def model_initializer (device):
     llm = HuggingFacePipeline(pipeline=pipe)
     return llm
 
+#Initialize prompts
 def prompt_loader ():
     with open(PROMPT_FILE,"r") as f:
         prompt = f.read()
     return prompt
 
+#Load preprocessed files
 def preproc_files_loader ():
     with open(PREPROC_FILES["clinical_sentences"],"r") as f:
         clinical_sentences = json.load(f)
@@ -113,6 +119,7 @@ def preproc_files_loader ():
         answer_sentences = json.load(f)
     return clinical_sentences, patient_question, answer_sentences    
 
+#Execute models
 def model_executor (llm,template,clinical_sentences, patient_question, answer_sentences):
     prompt = PromptTemplate(
         input_variables=PROMPT_VARIABLES,
@@ -140,20 +147,21 @@ def model_executor (llm,template,clinical_sentences, patient_question, answer_se
     
     return emaitzak, denborak
 
+#Main function
 def main ():
-    print("--AGENTE BAKARRAREN PROGRAMA--")
+    print("--SIMPLE AGENT PROGRAM--")
     template = prompt_loader ()
-    print("Prompta topatuta.")
+    print("PROMPT: FOUND.")
     clinical_sentences, patient_question, answer_sentences = preproc_files_loader()
     print("Fitxategi aurreprozesatuak topatuta.")
 
     device = gpu_initializer ()
-    print("GPUa abiarazita.")
+    print("GPU: Initialized.")
     llm = model_initializer (device)
-    print("Eredua hasieratuta.")
+    print("MODEL: Initialized.")
     if ITERS == 0:
         results, times = model_executor(llm,template,clinical_sentences,patient_question,answer_sentences)
-        print("Exekuzio arrakastatsua.")
+        print("EXECUTION: SUCCESS.")
         with open(OUTPUT_FILE,"w") as f:
             json.dump(results,f)
         with open(TIMES_FILE,"w") as f:
@@ -165,12 +173,12 @@ def main ():
                 results, times = model_executor(llm,template,clinical_sentences,patient_question,answer_sentences)
                 results_col.append(results)
                 times_col.append(times)
-        print("Exekuzio arrakastatsua.")
+        print("EXECUTION: SUCCESS.")
         with open(OUTPUT_FILE,"w") as f:
             json.dump(results_col,f)
         with open(TIMES_FILE,"w") as f:
             json.dump(times_col,f)
-    print("ONDO. Emaitzak gordeta.")
+    print("RESULTS: SAVED.")
 
 if __name__=="__main__":
     print(f"CUDA Available: {torch.cuda.is_available()}")
