@@ -3,10 +3,15 @@ from lxml import etree
 import xmltodict
 import json
 
-DATA_XML_PATH = "../DATA/test-2025/archehr-qa.xml"
-DATA_KEY_PATH = "../DATA/test-2025/archehr-qa_key.json"
-RESULT_PATH = "../preproc/TEST-2025/"
+#####################
+#    ADJUST THE PATHS
+#####################
 
+DATA_XML_PATH = "../DATA/test-2025/archehr-qa.xml" #Official XML of the Shared Task
+DATA_KEY_PATH = "../DATA/test-2025/archehr-qa_key.json" #Official KEY file of the Shared Task
+RESULT_PATH = "../preproc/TEST-2025/" #Directory to store the results
+
+#Read the offical files
 def reader ():
     with open(DATA_XML_PATH, 'r') as f:
         data = xmltodict.parse(f.read())
@@ -17,7 +22,8 @@ def reader ():
 def aur_test (testua):
     return testua.replace("\n"," ")
 
-def data_esaldi_bikoteak (data): #Datako esaldiak eta erreferentzia-zenbakia
+#Data extractor for the XML file
+def data_esaldi_bikoteak (data):
     bikoteak={}
     for kasua in data["annotations"]["case"]:
         bikoteak[kasua["@id"]]={}
@@ -25,7 +31,8 @@ def data_esaldi_bikoteak (data): #Datako esaldiak eta erreferentzia-zenbakia
             bikoteak[kasua["@id"]][esaldia["@id"]]=aur_test(esaldia["#text"])
     return bikoteak
 
-def esaldi_erref_bikoteak (key): #Erantzunetako esladiak erreferentziekin elkartuta
+#Link the clinical answers with their citation reference-numbers, according to the official data. 
+def esaldi_erref_bikoteak (key): 
     bikoteak={}
     for kasua in key:
         bikotea={}
@@ -49,6 +56,7 @@ def esaldi_erref_bikoteak (key): #Erantzunetako esladiak erreferentziekin elkart
         bikoteak[kasua["case_id"]]=bikotea
     return bikoteak
 
+#Subtask 2: link the relevance of each clinical note with the text of the clinical note
 def data_oinarrizkoak (key): #Datako esaldiak eta horien oinarrizkotasuna
     bikoteak={}
     for kasua in key:
@@ -58,12 +66,14 @@ def data_oinarrizkoak (key): #Datako esaldiak eta horien oinarrizkotasuna
         bikoteak[kasua["case_id"]]=tartekoa
     return bikoteak
 
+#Extract the clinical questions from teh data
 def paziente_galderak (data):
     bikoteak={}
     for kasua in data["annotations"]["case"]:
         bikoteak[kasua["@id"]]=kasua["clinician_question"]
     return bikoteak
 
+#Linker for the clinical answers and their citations.
 def erantzun_txantiloi_sortzailea (erantzun_erref):
     txantiloia=[]
     for kasua in erantzun_erref:
@@ -73,6 +83,7 @@ def erantzun_txantiloi_sortzailea (erantzun_erref):
         txantiloia.append({"case_id": kasua, "prediction": esaldiak})
     return txantiloia
 
+#Saver for preprocesed files. 
 def saver (erantzun_erref, galdera_erref, galdera_oinarriz, gold, paziente_galdera_kli):
     with open(RESULT_PATH+"erantzunak.json", 'w') as f:
         json.dump(erantzun_erref,f)
@@ -87,7 +98,7 @@ def saver (erantzun_erref, galdera_erref, galdera_oinarriz, gold, paziente_galde
 
 def main ():
     galdera_oinarriz = [ ]
-    print("--AURREPROZESAKETA PROGRAMA--")
+    print("--PREPROCESS: STARTED.--")
     data, key = reader ()
     print("Fitxategiak topatuta.")
     erantzun_erref=esaldi_erref_bikoteak(key)
@@ -95,9 +106,9 @@ def main ():
     #galdera_oinarriz=data_oinarrizkoak(key)
     gold=erantzun_txantiloi_sortzailea (erantzun_erref)
     paziente_galdera_kli=paziente_galderak(data)
-    print("Aurreprozesaketa eginda.")
+    print("--PREPROCESS: SUCCESS.")
     saver(erantzun_erref,galdera_erref,galdera_oinarriz,gold,paziente_galdera_kli)
-    print("ONDO. Aurreprozesaketa gordeta.")
+    print("--PREPROCESS: SAVED.")
 
 
 if __name__=="__main__":
